@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ShowWeatherForecastTests\**" />
+    <EmbeddedResource Remove="ShowWeatherForecastTests\**" />
+    <None Remove="ShowWeatherForecastTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

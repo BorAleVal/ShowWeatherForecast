@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShowWeatherForecast", "ShowWeatherForecast.csproj", "{41AB512B-BD10-43AF-AA71-9A0CF21A49E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowWeatherForecastTests", "ShowWeatherForecastTests\ShowWeatherForecastTests.csproj", "{29B4DBA2-DFC5-4FF6-A7D3-ACFF2CA55E26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowWeatherForecastTests", "..\ShowWeatherForecastTests\ShowWeatherForecastTests.csproj", "{29B4DBA2-DFC5-4FF6-A7D3-ACFF2CA55E26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
