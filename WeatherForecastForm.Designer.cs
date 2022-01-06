@@ -1,6 +1,6 @@
 ﻿namespace ShowWeatherForecast
 {
-    partial class Form1
+    partial class WeatherForecastForm
     {
         /// <summary>
         ///  Required designer variable.

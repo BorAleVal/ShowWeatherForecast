@@ -9,19 +9,18 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using ShowWeatherForecast.Models;
-using System.Reflection;
 
 namespace ShowWeatherForecast
 {
-    public partial class Form1 : Form
+    public partial class WeatherForecastForm : Form
     {
         private string url = "https://localhost:44356/api/WeatherCities";
-        private Weather weather;
-        public Form1()
+        private CityWeather cityWeatherForecast;
+        public WeatherForecastForm()
         {
+            // TODO : по идее нужно разобраться и переделать с использованием MVP для возможности тестирования.
             InitializeComponent();
             try
             {
@@ -39,16 +38,11 @@ namespace ShowWeatherForecast
                         comboBoxCity.SelectedIndex = 1;
                     }
                 }
-                //MessageBox.Show(barnWeather.CityName + "\n" + string.Join(",", barnWeather.Weather.Tempreture_max));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
         }
 
         private void comboBoxCity_SelectedIndexChanged(object sender, EventArgs e)
@@ -65,13 +59,11 @@ namespace ShowWeatherForecast
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         var body = reader.ReadToEnd();
-                        var weatherForecast = JsonConvert.DeserializeObject<CityWeather>(body);
-                        weather = weatherForecast.Weather;
-                        dateTimePicker.MinDate = weatherForecast.Date;
-                        dateTimePicker.Value = weatherForecast.Date;
-                        dateTimePicker.MaxDate = weatherForecast.Date.AddDays(weatherForecast.Weather.TempretureMax.Count() - 1);
-                        //ShowWeatherOnDay(0);
-                        //MessageBox.Show(weatherForecast.CityName + "\n" + string.Join(",", weatherForecast.Weather.Tempreture_max));
+                        cityWeatherForecast = JsonConvert.DeserializeObject<CityWeather>(body);
+                        dateTimePicker.MinDate = cityWeatherForecast.Date;
+                        dateTimePicker.Value = cityWeatherForecast.Date;
+                        dateTimePicker.MaxDate = cityWeatherForecast.Date.AddDays(cityWeatherForecast.WeatherForecast.Count() - 1);
+                        ShowWeatherOnDay(0);
                     }
                 }
             }
@@ -83,13 +75,14 @@ namespace ShowWeatherForecast
 
         private void ShowWeatherOnDay(int dayNum)
         {
-            richTextBox.Text = $"Температура {weather.TempretureMin[dayNum]}..{weather.TempretureMax[dayNum]}\n{weather.Cloudiness[dayNum]}" +
-                $"\nВетер {weather.Wind.Direction[dayNum]} {weather.Wind.AvgSpeed[dayNum]}м/с с порывами до {weather.Wind.GustSpeed[dayNum]}м/с" +
-                $"\nДавление {weather.PressureMin[dayNum]}-{weather.PressureMax[dayNum]}мм рт. ст." +
-                $"\nВлажность {weather.Humidity[dayNum]}%" +
-                $"\nОсадки {weather.Precipitation[dayNum]}мм" +
-                $"\nГеомагнитная активность {weather.Geomagnetic[dayNum]}Кп-индекс" +
-                $"\nУльтрафиолетовый индекс {weather.Radiation[dayNum]}";
+            var weather = cityWeatherForecast.WeatherForecast[dayNum];
+            richTextBox.Text = $"Температура {weather.TempretureMin}..{weather.TempretureMax}\n{weather.Cloudiness}" +
+                $"\nВетер {weather.Wind.Direction} {weather.Wind.AvgSpeed}м/с с порывами до {weather.Wind.GustSpeed}м/с" +
+                $"\nДавление {weather.PressureMin}-{weather.PressureMax}мм рт. ст." +
+                $"\nВлажность {weather.Humidity}%" +
+                $"\nОсадки {weather.Precipitation}мм" +
+                $"\nГеомагнитная активность {weather.Geomagnetic}Кп-индекс" +
+                $"\nУльтрафиолетовый индекс {weather.Radiation}";
         }
 
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
