@@ -1,6 +1,5 @@
+using ShowWeatherForecast.Views;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ShowWeatherForecast
@@ -16,7 +15,9 @@ namespace ShowWeatherForecast
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WeatherForecastForm());
+
+            var view = new WeatherForecastForm();
+            Application.Run(view);
         }
     }
 }

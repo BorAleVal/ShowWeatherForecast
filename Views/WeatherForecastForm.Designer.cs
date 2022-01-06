@@ -1,4 +1,4 @@
-﻿namespace ShowWeatherForecast
+﻿namespace ShowWeatherForecast.Views
 {
     partial class WeatherForecastForm
     {
