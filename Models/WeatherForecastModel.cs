@@ -17,7 +17,6 @@ namespace ShowWeatherForecast.Models
 
             if (request == null) return null;
 
-            // TODO : нужно еще добавить проверку на подключение.
             WebResponse response = request.GetResponse();
 
             using (Stream stream = response.GetResponseStream())

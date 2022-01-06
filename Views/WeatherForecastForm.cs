@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ShowWeatherForecast.Models;
 using ShowWeatherForecast.Presenters;
+using NLog;
 
 namespace ShowWeatherForecast.Views
 {
@@ -22,6 +21,8 @@ namespace ShowWeatherForecast.Views
         public List<string> CitiesList { get; set; }
         public string SelectedCity { get => comboBoxCity.SelectedItem.ToString(); }
         public DateTime SelectedDate { get => dateTimePicker.Value; }
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public WeatherForecastForm()
         {
@@ -38,7 +39,8 @@ namespace ShowWeatherForecast.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                logger.Error(ex.ToString());
+                MessageBox.Show("Не удалось получить данные о городах.");
             }
         }
 
@@ -54,12 +56,21 @@ namespace ShowWeatherForecast.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                logger.Error(ex.ToString());
+                MessageBox.Show($"Не удалось получить данные о погоде в городе {CityWeather.CityName}.");
             }
         }
 
         private void ShowWeatherOnDay(int dayNum)
         {
+            if (CityWeather == null) return;
+
+            if (CityWeather.WeatherForecast.Length < dayNum)
+            {
+                MessageBox.Show($"Не удалось получить данные о погоде в городе {CityWeather.CityName}.");
+                return;
+            }
+
             var weather = CityWeather.WeatherForecast[dayNum];
             richTextBox.Text = $"Температура {weather.TempretureMin}..{weather.TempretureMax}\n{weather.Cloudiness}" +
                 $"\nВетер {weather.Wind.Direction} {weather.Wind.AvgSpeed}м/с с порывами до {weather.Wind.GustSpeed}м/с" +
